@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ movie.title }}{% endblock %}
+
+{% block content %}
+<div class="movie-detail-wrapper">
+  <h2>{{ movie.title }}</h2>
+  <p><strong>개요:</strong> {{ movie.overview }}</p>
+  <p><strong>개봉일:</strong> {{ movie.release_date }}</p>
+  <p><strong>평점:</strong> ⭐ {{ movie.vote_average }}</p>
+  <p><strong>장르:</strong> {{ movie.genres }}</p>
+  <a href="{% url 'movie_list' %}"> 목록으로</a>
+</div>
+{% endblock %}

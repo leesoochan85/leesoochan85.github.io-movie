@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}영화 목록{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/MovieList.css' %}">
+{% endblock %}
+
+{% block content %}
+<h2 class="recommendation-title"> 오늘의 영화 추천</h2>
+<div class="recommendation-grid">
+  {% for movie in top_movies %}
+    <div class="recommendation-card">
+      <h3>{{ movie.title }}</h3>
+      <p>평점 {{ movie.vote_average }}</p>
+    </div>
+  {% endfor %}
+</div>
+
+<p class="total-count">전체 영화 수: {{ total_count }}</p>
+
+<div class="movie-board-wrapper">
+  <h2 class="board-title">추천 영화 목록</h2>
+
+  <form method="get" action="{% url 'movie_list' %}" class="movie-search-form">
+    <input type="text" name="q" value="{{ query }}" placeholder="영화 제목 검색">
+    <button type="submit">검색</button>
+  </form>
+  
+  <div class="movie-layout">
+    <!-- 영화 리스트 -->
+    <section class="movie-list-area">
+      <div class="post-grid" id="movieGrid"></div>
+      <div class="pagination" id="pagination"></div>
+    </section>
+
+    <!-- 장르 필터 -->
+    <aside class="genre-filter">
+      <h4>장르 선택</h4>
+      <form id="genreForm">
+        <!-- JS에서 렌더링 -->
+      </form>
+    </aside>
+  </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const PER_PAGE = 8;
+  let movies = [];
+  let currentPage = 1;
+  let selectedGenres = [];
+
+  const movieGrid = document.getElementById('movieGrid');
+  const pagination = document.getElementById('pagination');
+  const genreForm = document.getElementById('genreForm');
+
+  async function fetchMovies() {
+    try {
+    const query = new URLSearchParams(window.location.search).get('q') || '';
+    const response = await fetch(`/movies/api/?q=${encodeURIComponent(query)}`);
+      if (!response.ok) throw new Error('영화 데이터를 불러올 수 없습니다.');
+      const data = await response.json();
+      return data.movies.map(movie => ({
+        ...movie,
+        genres: movie.genres || ''
+      }));
+    } catch (error) {
+      console.error('데이터 불러오기 실패:', error);
+      return [];
+    }
+  }
+
+  function renderGenreCheckboxes(allGenres) {
+    genreForm.innerHTML = '';
+    allGenres.forEach(genre => {
+      if (!genre.trim()) return;
+      const id = `genre-${genre.replace(/\s+/g, '-')}`;
+      genreForm.innerHTML += `
+        <label>
+          <input type="checkbox" value="${genre}" id="${id}">
+          ${genre}
+        </label>
+      `;
+    });
+
+    genreForm.querySelectorAll('input[type="checkbox"]').forEach(input => {
+      input.addEventListener('change', () => {
+        selectedGenres = Array.from(genreForm.querySelectorAll('input:checked')).map(cb => cb.value);
+        currentPage = 1;
+        renderMovies();
+      });
+    });
+  }
+
+  function getFilteredMovies() {
+    if (selectedGenres.length === 0) return movies;
+    return movies.filter(m => {
+      if (!m.genres) return false;
+      return selectedGenres.every(g => m.genres.includes(g));
+    });
+  }
+
+  function renderMovies() {
+    const filtered = getFilteredMovies();
+    const start = (currentPage - 1) * PER_PAGE;
+    const current = filtered.slice(start, start + PER_PAGE);
+
+    movieGrid.innerHTML = '';
+
+    if (current.length === 0) {
+      movieGrid.innerHTML = '<div class="no-results">검색 결과가 없습니다.</div>';
+      return;
+    }
+
+    current.forEach(movie => {
+      const card = document.createElement('div');
+      card.className = 'post-card';
+      card.innerHTML = `
+        <div class="post-info">
+          <h3>${movie.title}</h3>
+          <p>${movie.overview.length > 100 ? movie.overview.substring(0, 100) + '...' : movie.overview}</p>
+          <div class="post-meta">
+            <span>개봉일: ${movie.release_date}</span>
+            <span>평점: ${movie.vote_average}</span>
+          </div>
+          <div class="movie-genres">장르: ${movie.genres}</div>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        window.location.href = `/movies/${movie.id}/`;
+      });
+
+      movieGrid.appendChild(card);
+    });
+
+    renderPagination(filtered);
+  }
+
+  function renderPagination(data) {
+    pagination.innerHTML = '';
+    const totalPages = Math.ceil(data.length / PER_PAGE);
+    const startPage = Math.floor((currentPage - 1) / 10) * 10 + 1;
+    const endPage = Math.min(startPage + 9, totalPages);
+
+    const prevBtn = document.createElement('button');
+    prevBtn.textContent = '◀';
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderMovies();
+      }
+    });
+    pagination.appendChild(prevBtn);
+
+    for (let i = startPage; i <= endPage; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      btn.className = i === currentPage ? 'current' : '';
+      btn.addEventListener('click', () => {
+        currentPage = i;
+        renderMovies();
+      });
+      pagination.appendChild(btn);
+    }
+
+    const nextBtn = document.createElement('button');
+    nextBtn.textContent = '▶';
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.addEventListener('click', () => {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderMovies();
+      }
+    });
+    pagination.appendChild(nextBtn);
+  }
+
+  fetchMovies().then(data => {
+    movies = data;
+    const allGenres = Array.from(new Set(
+      movies.flatMap(m => (m.genres || '').split(',').map(g => g.trim()).filter(g => g))
+    ));
+    renderGenreCheckboxes(allGenres);
+    renderMovies();
+  });
+});
+</script>
+{% endblock %}

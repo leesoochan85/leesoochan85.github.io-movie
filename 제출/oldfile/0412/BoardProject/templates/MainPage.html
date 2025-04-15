@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}메인 페이지{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/MainPage.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-page"> <!-- 간단한 메인 페이지입니다. 사용해도 좋고 안 해도 좋습니다. -->
+  <!-- 공지사항 -->
+  <section class="notice">
+    <h3>📢 공지사항</h3>
+    <ul>
+      <li>📌 공지사항01 </li>
+      <li>📌 공지사항02 </li> <!-- 단순 꾸밈 요소입니다. -->
+    </ul>
+  </section>
+
+  <!-- 배너 -->
+  <section class="banner">
+    <div class="slider-container">
+      <button class="slide-btn prev">◀</button>
+  
+      <div class="slider" id="slider">
+        <img src="{% static 'images/banners/banner1.jpg' %}" alt="영화 추천 1" />
+        <img src="{% static 'images/banners/banner2.jpg' %}" alt="영화 추천 2" />
+        <img src="{% static 'images/banners/banner3.jpg' %}" alt="영화 추천 3" />
+      </div>
+  
+      <button class="slide-btn next">▶</button>
+    </div>
+  </section>
+
+  <!-- 콘텐츠 -->
+  <div class="content-wrapper">
+    <!-- 최신 게시글 -->
+    <div class="main-container">
+      <h2 class="section-title">📝 최신 게시글</h2>
+      <div class="post-grid" id="postGrid"></div> <!-- 메인 화면 게시글 6개의 경우, MainPage.js에서 내용을 받아오고 있습니다. 최신 글 6개를 보여주고자 하는 목적입니다만 바꿔도 될 듯 싶습니다. -->
+    </div>
+
+    <!-- 추천 영화 -->
+    <div class="recommend-container">
+      <h2 class="section-title">🎬 평점 높은 영화</h2>
+      <div class="movie-list" id="movieList"></div> <!-- 평점 높은 영화 목록의 경우, MainPage.js에서 내용 / 평점 / 감독을 받아오고 있습니다 -->
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/MainPage.js' %}"></script>
+{% endblock %}
+

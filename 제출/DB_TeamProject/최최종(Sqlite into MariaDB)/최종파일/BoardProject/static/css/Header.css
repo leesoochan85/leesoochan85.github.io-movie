@@ -1,0 +1,87 @@
+:root {
+  --header-bg: #1a2238;
+  --header-text: #ffffff;
+  --header-accent: #ff6b6b;
+  --header-hover: #4ecdc4;
+  --header-active: #ffa000;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 40px;
+  background-color: var(--header-bg);
+  color: var(--header-text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo a {
+  color: var(--header-text);
+  font-size: 22px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.logo a:hover {
+  color: var(--header-accent);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-links a {
+  color: var(--header-text);
+  font-size: 15px;
+  padding: 6px 12px;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-links a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--header-hover);
+}
+
+.nav-links a.active {
+  color: var(--header-active);
+  font-weight: bold;
+}
+
+.nav-links a[href="/login"],
+.nav-links a[href="/logout"] {
+  background-color: var(--header-accent);
+  color: #fff;
+  border-radius: 16px;
+  padding: 6px 14px;
+}
+
+.nav-links a[href="/login"]:hover,
+.nav-links a[href="/logout"]:hover {
+  background-color: #ff8585;
+}
+
+.nav-links a[href="/register"] {
+  border: 1px solid var(--header-accent);
+  padding: 5px 12px;
+  border-radius: 16px;
+}
+
+.nav-links a[href="/register"]:hover {
+  background-color: var(--header-accent);
+  color: #fff;
+}
+

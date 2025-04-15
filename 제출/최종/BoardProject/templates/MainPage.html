@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}메인 페이지{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/MainPage.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="main-page">
+  <!-- 공지사항 -->
+  <section class="notice">
+    <h3><i class="fas fa-bullhorn"></i> 공지사항</h3>
+    <ul>
+      <li><i class="fas fa-thumbtack"></i> 영화와 관련된 정보를 자유롭게 공유하는 페이지입니다.</li>
+      <li><i class="fas fa-thumbtack"></i> 게시판 이용 시 유의사항을 확인해주세요.</li>
+    </ul>
+  </section>
+
+  <!-- 배너 -->
+  <section class="banner">
+    <div class="slider-container">
+      <button class="slide-btn prev"><i class="fas fa-chevron-left"></i></button>
+  
+      <div class="slider" id="slider">
+        <img src="{% static 'images/banners/banner1.jpg' %}" alt="영화 추천 1" />
+        <img src="{% static 'images/banners/banner2.jpg' %}" alt="영화 추천 2" />
+        <img src="{% static 'images/banners/banner3.jpg' %}" alt="영화 추천 3" />
+      </div>
+  
+      <button class="slide-btn next"><i class="fas fa-chevron-right"></i></button>
+      
+      <div class="slider-indicators" id="sliderIndicators"></div>
+    </div>
+  </section>
+
+  <!-- 콘텐츠 -->
+  <div class="content-wrapper">
+    <!-- 최신 게시글 -->
+    <div class="main-container">
+      <h2 class="section-title"><i class="fas fa-pencil-alt"></i> 최신 게시글</h2>
+      <div class="post-grid" id="postGrid"></div>
+    </div>
+
+    <!-- 추천 영화 -->
+    <div class="recommend-container">
+      <h2 class="section-title"><i class="fas fa-film"></i> 평점 높은 영화</h2>
+    
+      <div class="dummy-movie-list">
+        {% for movie in dummy_movies %}
+          <div class="dummy-movie-card">
+            <a href="{% url 'movie_detail' movie.id %}" class="dummy-title">
+              {{ movie.title }}
+            </a>
+            <div class="dummy-meta">
+              <span>{{ movie.genres }}</span>
+              <span style="color: orange; font-weight: bold;">⭐ {{ movie.vote_average }}</span>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+<!-- <div class="recommend-container">
+  <h2 class="section-title"><i class="fas fa-film"></i> 평점 높은 영화</h2>
+  <ul class="movie-list" id="movieList">
+    {% for movie in top_movies %}
+      <li>
+        <a href="{% url 'movie_detail' movie_id=movie.id %}">
+          <strong>{{ movie.title }}</strong>
+        </a>
+        <span style="color: orange; font-weight: bold;">⭐ {{ movie.vote_average }}</span>
+      </li>
+    {% empty %}
+      <li>추천할 영화가 없습니다.</li>
+    {% endfor %}
+  </ul>
+</div> -->
+
+<script src="{% static 'js/MainPage.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}게시글 상세 보기{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/BoardDetail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="post-detail-wrapper">
+  <h2 class="detail-title">{{ post.title }}</h2>
+
+  <div class="detail-meta">
+    <span>글 번호: {{ post.id }}</span>
+    <span>작성자: {{ post.writer }}</span>
+    <span>작성일: {{ post.date|date:"Y-m-d H:i" }}</span>
+  </div>
+
+  <hr class="divider">
+
+  <div class="detail-content">
+    <p>{{ post.content }}</p>
+  </div>
+
+  <div class="detail-actions">
+    <a href="{% url 'post_list' %}" class="back-button">글 목록</a>
+  </div>
+</div>
+
+
+<!--////추가////   로그인 한 사람이 본인일 때만 수정 삭제 버튼 보이도록 -->
+{% if post.writer and post.writer.username == request.user.username %}
+  <div class="post-actions">
+    <a href="{% url 'edit_post' post.id %}">수정</a>
+    <form action="{% url 'delete_post' post.id %}" method="post" style="display:inline;">
+      {% csrf_token %}
+      <button type="submit">삭제</button>
+    </form>
+  </div>
+{% endif %}
+
+
+<!-- 댓글 목록 -->
+<div class="comment-section">
+  <h3>댓글</h3>
+  <div class="comment-list">
+    {% for comment in post.comments.all %}
+      <div class="comment-item">
+        <div class="comment-author">
+          {% if comment.author %}
+            {{ comment.author.username }}
+          {% else %}
+            탈퇴한 사용자
+          {% endif %}
+        </div>
+        <div class="comment-content">{{ comment.content }}</div>
+        <div class="comment-meta">
+          <small>{{ comment.created_at|date:"Y-m-d H:i" }}</small>
+          {% if comment.author and comment.author == user %}
+            <div class="comment-actions">
+              <a href="{% url 'edit_comment' comment.id %}">수정</a>
+              <a href="{% url 'delete_comment' comment.id %}">삭제</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <p>댓글이 없습니다.</p>
+    {% endfor %}
+  </div>
+
+
+<!-- 댓글 작성 폼 -->
+  <div class="comment-form">
+    <form method="post" action="{% url 'add_comment' post.id %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">작성</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+`

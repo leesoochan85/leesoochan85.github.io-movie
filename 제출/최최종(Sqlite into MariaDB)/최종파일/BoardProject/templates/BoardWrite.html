@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}게시글 작성{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/BoardWrite.css' %}">
+
+<div class="board-write-wrapper">
+  <h2 class="board-title">게시글 작성</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">작성하기</button>
+  </form>
+</div>
+
+{% endblock %}

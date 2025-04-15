@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}게시글 목록{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/BoardList.css' %}">
+
+<div class="board-list-wrapper">
+
+  {% if user.is_authenticated %}
+    <!-- 로그인 상태 -->
+    <a href="/logout/">로그아웃</a>
+  {% else %}
+    <!-- 비로그인 상태 -->
+    <a href="/login/">로그인</a>
+  {% endif %}
+
+  <h2 class="board-title"> 　게시글 목록</h2>
+
+  <!-- 게시글 목록 헤더 -->
+  <div class="post-header">
+    <div class="post-id">번호</div>
+    <div class="post-title">제목</div>
+    <div class="post-writer">작성자</div>
+    <div class="post-date">작성일</div> 
+  </div>
+
+  <!-- 게시글 리스트의 경우, BoardList.js에서 내용을 받아오고 있습니다. -->
+  <div class="post-list" id="postList"></div>
+
+  <!-- 페이지 처리 -->
+  <div class="pagination">
+    <button id="prevGroup">이전</button>
+    <span id="pageButtons"></span>
+    <button id="nextGroup">다음</button>
+  </div>
+
+  <!-- 검색창 -->
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="게시글 검색..." />
+    <button id="searchButton">검색</button>
+  </div>
+
+</div>
+
+<script src="{% static 'js/BoardList.js' %}"></script>
+{% endblock %}
+
+

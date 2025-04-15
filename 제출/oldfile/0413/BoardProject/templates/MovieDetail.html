@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <!--  메시지 출력 (태그로 구분) -->
+    {% if messages %}
+        {% for message in messages %}
+            {% if 'review_comment' in message.tags %}
+                <div class="alert alert-success text-center">{{ message }}</div>
+            {% elif 'review_comment_error' in message.tags %}
+                <div class="alert alert-danger text-center">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <!-- 영화 상세 정보 -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h2>{{ movie.title }}</h2>
+        </div>
+        <div class="card-body">
+            <p><strong>개요:</strong> {{ movie.overview }}</p>
+            <p><strong>개봉일:</strong> {{ movie.release_date }}</p>
+            <p><strong>평점:</strong> {{ movie.vote_average }}</p>
+            <p><strong>장르:</strong> {{ movie.genres }}</p>
+        </div>
+    </div>
+
+    <!-- 전문가 리뷰 섹션 -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h3>전문가 리뷰</h3>
+        </div>
+        <div class="card-body">
+            {% if reviews %}
+                {% for review in reviews %}
+                <div class="mb-3 p-3 border rounded">
+                    <h5>{{ review.author }}</h5>
+                    <p>{{ review.content }}</p>
+                    {% if review.translated_content %}
+                    <p><small class="text-muted">번역: {{ review.translated_content }}</small></p>
+                    {% endif %}
+                    <small class="text-muted">{{ review.created_at|date:"Y-m-d H:i" }}</small>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">아직 등록된 리뷰가 없습니다.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- 사용자 리뷰 섹션 -->
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h3>사용자 리뷰</h3>
+        </div>
+        <div class="card-body">
+            <!-- 리뷰 작성 폼 -->
+            {% if user.is_authenticated %}
+            <form method="post" class="mb-4">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ form.content.label_tag }}
+                    {{ form.content }}
+                </div>
+                <button type="submit" class="btn btn-primary mt-2">리뷰 작성</button>
+            </form>
+            {% else %}
+            <div class="alert alert-warning text-center">
+                리뷰를 작성하려면 <a href="{% url 'login' %}">로그인</a> 해주세요.
+            </div>
+            {% endif %}
+
+            <!-- 사용자 리뷰 목록 -->
+            <h4 class="mt-4">사용자 리뷰 목록</h4>
+            {% if review_comments %}
+                {% for comment in review_comments %}
+                <div class="mb-3 p-3 border rounded">
+                    <h5>{{ comment.user.username }}</h5>
+                    <p>{{ comment.content }}</p>
+                    <small class="text-muted">
+                        작성: {{ comment.created_at|date:"Y-m-d H:i" }}
+                        {% if comment.updated_at != comment.created_at %}
+                        (수정됨: {{ comment.updated_at|date:"Y-m-d H:i" }})
+                        {% endif %}
+                    </small>
+                    {% if user == comment.user %}
+                    <div class="mt-2">
+                        <a href="{% url 'edit_review_comment' comment.id %}" class="btn btn-sm btn-outline-secondary">수정</a>
+                        <a href="{% url 'delete_review_comment' comment.id %}"
+                           class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+                    </div>
+                {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-center">작성된 리뷰가 없습니다.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

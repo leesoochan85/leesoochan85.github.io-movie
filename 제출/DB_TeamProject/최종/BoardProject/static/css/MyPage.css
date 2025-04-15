@@ -1,0 +1,29 @@
+.mypage-container {
+    width: 500px;
+    margin: 100px auto;
+    padding: 40px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: left;
+  }
+  
+  .mypage-container h2 {
+    text-align: left;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    color: #333;
+  }
+  
+  .user-info p {
+    font-size: 1rem;
+    color: #333;
+    margin: 12px 0;
+  }
+  
+  .user-info strong {
+    color: #555;
+    margin-right: 8px;
+  }
+  

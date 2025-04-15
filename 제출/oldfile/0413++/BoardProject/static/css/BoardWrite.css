@@ -1,0 +1,58 @@
+.board-write-wrapper {
+    max-width: 800px;
+    height: 700px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    border: 1px solid #eee;
+  }
+  
+  .board-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: left;
+    color: #333;
+  }
+  
+  form input[type="text"],
+  form textarea {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    margin-bottom: 1.2rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+  }
+  
+  form input[type="text"]:focus,
+  form textarea:focus {
+    border-color: #ffa000;
+    outline: none;
+  }
+  
+  form textarea {
+    min-height: 400px;
+    resize: none; 
+  }
+  
+  form button {
+    background-color: #ffa000;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.6rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  form button:hover {
+    background-color: #ffa000;
+  }
+  

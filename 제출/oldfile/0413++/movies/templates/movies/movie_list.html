@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>영화 목록</title>
+</head>
+<body>
+    <h1>영화 리스트</h1>
+    <form method="get" action="{% url 'movie_list' %}">
+        <input type="text" name="q" placeholder="영화 제목 검색" value="{{ query }}">
+        <button type="submit">검색</button>
+      </form>
+      
+    <p>전체 영화 수: {{ total_count }}</p>
+
+    <h2>🎯 오늘의 영화 추천</h2>
+    <ul>
+        {% for movie in top_movies %}
+            <li>
+                <a href="{% url 'movie_detail' movie.id %}">
+                    {{ movie.title }} - 평점 {{ movie.vote_average }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <h2>📃 전체 영화 목록</h2>
+    <ul>
+        {% for movie in movies %}
+            <li>
+                <a href="{% url 'movie_detail' movie.id %}">
+                    {{ movie.title }} ({{ movie.release_date }})
+                </a>
+            </li>
+        {% empty %}
+            <li>영화가 없습니다.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

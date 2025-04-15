@@ -1,0 +1,277 @@
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Post, Comment, Movies, Review, ReviewComment
+from django.http import JsonResponse
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from account.forms import SignUpForm
+from .forms import CommentForm, ReviewCommentForm
+from django.http import HttpResponseForbidden
+from django.views.decorators.http import require_http_methods
+
+def boardlist(request):
+    return render(request, 'boardlist.html')
+
+def boardwrite(request):
+    return render(request, 'boardwrite.html')
+
+def main_page(request):
+    return render(request, 'MainPage.html')
+
+def movie_list(request):
+    return render(request, 'MovieList.html')
+
+def movie_detail(request, movie_id):
+    movie = get_object_or_404(Movies, id=movie_id)
+    reviews = Review.objects.filter(movie=movie).order_by('-created_at')
+    review_comments = ReviewComment.objects.filter(movie=movie).order_by('-created_at')
+    form = ReviewCommentForm()
+    
+    if request.method == 'POST':
+        # 로그인한 사용자만 리뷰 작성 가능
+        if not request.user.is_authenticated:
+            messages.error(request, '리뷰를 작성하려면 로그인이 필요합니다.')
+            return redirect('movie_detail', movie_id=movie.id)
+        
+        form = ReviewCommentForm(request.POST)
+        if form.is_valid():
+            # commit=False로 저장하지 않고 인스턴스만 생성
+            comment = form.save(commit=False)
+            # 필수 필드 설정
+            comment.movie = movie
+            comment.user = request.user
+            # 최종 저장
+            comment.save()
+            messages.success(request, '리뷰가 성공적으로 작성되었습니다.', extra_tags='review_comment')
+            return redirect('movie_detail', movie_id=movie.id)
+        else:
+            # 폼이 유효하지 않을 경우 오류 메시지 표시
+            messages.error(request, '리뷰 작성 중 오류가 발생했습니다. 다시 시도해주세요.', extra_tags='review_comment_error')
+    
+    context = {
+        'movie': movie,
+        'reviews': reviews,
+        'review_comments': review_comments,
+        'form': form,
+    }
+    
+    return render(request, 'MovieDetail.html', context)
+
+@login_required
+def edit_review_comment(request, comment_id):
+    comment = get_object_or_404(ReviewComment, id=comment_id)
+
+    if comment.user != request.user:
+        messages.error(request, "댓글을 수정할 권한이 없습니다.")
+        return redirect('movie_detail', movie_id=comment.movie.id)
+
+    if request.method == 'POST':
+        form = ReviewCommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "댓글이 수정되었습니다.", extra_tags='review_comment')
+            return redirect('movie_detail', movie_id=comment.movie.id)
+    else:
+        form = ReviewCommentForm(instance=comment)
+
+    return render(request, 'edit_review_comment.html', {
+        'form': form,
+        'comment': comment
+    })
+
+@login_required
+def delete_review_comment(request, comment_id):
+    # 댓글을 가져옴
+    comment = get_object_or_404(ReviewComment, id=comment_id)
+
+    # 댓글 작성자가 아니라면 접근을 막음
+    if comment.user != request.user:
+        messages.error(request, "댓글을 삭제할 권한이 없습니다.")
+        return redirect('movie_detail', movie_id=comment.movie.id)
+
+    # 댓글 삭제
+    comment.delete()
+
+    messages.success(request, "댓글이 삭제되었습니다.")
+    return redirect('movie_detail', movie_id=comment.movie.id)
+
+
+def movie_list_api(request):
+    # 모든 영화 데이터를 가져옵니다.
+    movies = Movies.objects.all()
+    
+    # 영화 데이터를 JSON으로 변환
+    movie_data = []
+    for movie in movies:
+        movie_data.append({
+            'id': movie.id,
+            'title': movie.title,
+            'overview': movie.overview,
+            'release_date': movie.release_date.strftime('%Y-%m-%d'),
+            'vote_average': movie.vote_average,
+            'genres': movie.genres,
+        })
+    
+    # JSON 응답 반환
+    return JsonResponse({'movies': movie_data})
+
+
+@login_required
+def post_list(request):
+    posts = Post.objects.all().order_by('-date')  # 글 전체를 날짜 내림차순으로 가져오기
+    return render(request, 'BoardList.html', {'posts': posts})
+
+def post_list_api(request):
+    posts = Post.objects.all().order_by('-date')
+    data = []
+    for post in posts:
+        data.append({
+            'id': post.id,
+            'title': post.title,
+            'content': post.content,
+            'writer': post.writer.username if hasattr(post.writer, 'username') else str(post.writer),
+            'date': post.date.strftime('%Y-%m-%d %H:%M') if post.date else ''
+        })
+    return JsonResponse(data, safe=False)
+
+@login_required
+def post_write(request):
+    if request.method == "POST":
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        writer=request.user
+        #writer = request.POST.get('writer')
+        
+        Post.objects.create(title=title, content=content, writer=writer)
+        return redirect('post_list')  # 저장 후 목록 페이지로 이동
+    return render(request, 'BoardWrite.html')
+
+    from django.http import HttpResponseForbidden
+
+#게시글 수정 추가
+@login_required
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if post.writer == request.user.username:  # 작성자 본인인지 확인 !=를 ==로 변경
+        return HttpResponseForbidden("수정 권한이 없습니다.")
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        
+        post.title = title
+        post.content = content
+        post.save()
+        
+        return redirect('post_detail', post_id=post.id)
+    
+    return render(request, 'post_edit.html', {'post': post})
+
+# #게시글 삭제 추가
+# @login_required
+# def delete_post(request, post_id):
+#     post = get_object_or_404(Post, id=post_id)
+
+#     if post.writer == request.user.username:  # 작성자 본인만 삭제 가능
+#         return HttpResponseForbidden("삭제 권한이 없습니다.")
+
+#     post.delete()
+#     return redirect('post_list')
+
+#게시글 삭제 수정 버전
+@login_required
+@require_http_methods(["POST"])  # DELETE 요청만 허용
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if post.writer != request.user:
+        return HttpResponseForbidden("삭제 권한이 없습니다.")
+
+    post.delete()
+    return redirect('post_list') #삭제 성공 json 메세지 출력하는 대신 리다이렉트
+    #return JsonResponse({'message': '삭제 성공'}, status=200)
+    #여기까지
+
+def post_detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    form = CommentForm()  # 댓글 작성 폼 생성
+    return render(request, 'BoardDetail.html', {'post': post, 'form': form})
+
+@login_required
+def mypage(request):
+    user = request.user  # 현재 로그인한 사용자
+    return render(request, 'mypage.html', {'user': user})
+
+def signup(request):
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # 가입 후 로그인 페이지로
+    else:
+        form = SignUpForm()
+    return render(request, 'signup.html', {'form': form})
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('/')  # 로그인 성공하면 메인 페이지로
+        else:
+            messages.error(request, '아이디 또는 비밀번호가 틀렸습니다.')
+
+    return render(request, 'registration/login.html')
+
+@login_required
+def add_comment(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect('post_detail', post_id=post.id)
+    else:
+        form = CommentForm()
+
+    return render(request, 'BoardDetail.html', {'post': post, 'form': form})
+
+@login_required
+def edit_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if comment.author != request.user:
+        return HttpResponseForbidden("수정 권한이 없습니다.")
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect('post_detail', post_id=comment.post.id)
+    else:
+        form = CommentForm(instance=comment)
+
+    return render(request, 'comment_edit.html', {'form': form, 'comment': comment})
+
+
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    # 작성자 본인만 삭제 가능
+    if comment.author != request.user:
+        return HttpResponseForbidden("삭제 권한이 없습니다.")
+
+    post_id = comment.post.id
+    comment.delete()
+    return redirect('post_detail', post_id=post_id)
+

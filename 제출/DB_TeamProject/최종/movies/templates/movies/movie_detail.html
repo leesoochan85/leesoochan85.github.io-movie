@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}{{ movie.title }} - 상세 정보{% endblock %}
+
+{% block content %}
+  <style>
+    .movie-detail {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+    }
+
+    .movie-detail h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .movie-detail p {
+      margin: 8px 0;
+    }
+
+    .movie-detail strong {
+      color: #444;
+    }
+
+    .movie-detail h2 {
+      margin-top: 30px;
+      font-size: 1.5rem;
+    }
+
+    .movie-detail ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .movie-detail li {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .movie-detail li strong {
+      color: #2c3e50;
+    }
+  </style>
+
+  <div class="movie-detail">
+    <h1>{{ movie.title }}</h1>
+    <p><strong>장르:</strong> {{ movie.genres }}</p>
+    <p><strong>개봉일:</strong> {{ movie.release_date }}</p>
+    <p><strong>평점:</strong> {{ movie.vote_average }}</p>
+    <p><strong>줄거리:</strong> {{ movie.overview }}</p>
+
+    <h2> 리뷰</h2>
+    {% if reviews %}
+      <ul>
+        {% for review in reviews %}
+          <li><strong>{{ review.author }}</strong>: {{ review.content }}</li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>아직 리뷰가 없습니다.</p>
+    {% endif %}
+  </div>
+{% endblock %}

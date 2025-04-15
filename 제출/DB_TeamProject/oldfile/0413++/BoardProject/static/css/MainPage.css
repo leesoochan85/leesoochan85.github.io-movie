@@ -1,0 +1,355 @@
+:root {
+  --primary-color: #3f51b5;
+  --secondary-color: #ff4081;
+  --accent-color: #ffa000;
+  --text-primary: #333;
+  --text-secondary: #666;
+  --bg-light: #f9f9f9;
+  --bg-white: #ffffff;
+  --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+  --border-radius: 8px;
+  --transition-speed: 0.3s;
+}
+
+.main-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-light);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--border-radius);
+}
+
+/* 공지사항 */
+.notice {
+  background-color: #fff8e1;
+  border-left: 6px solid var(--accent-color);
+  padding: 18px;
+  margin-bottom: 30px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-speed) ease;
+}
+
+
+.notice h3 {
+  margin: 0 0 10px;
+  color: var(--accent-color);
+  font-size: 1.3em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notice ul {
+  padding-left: 30px;
+  margin: 0;
+  font-size: 1em;
+  line-height: 1.6;
+}
+
+.notice li {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* 배너 (슬라이드) */
+.banner {
+  margin-bottom: 40px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+/* 슬라이더 컨테이너 */
+.slider-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  border-radius: var(--border-radius);
+}
+
+.slider {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slider img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* 슬라이드 버튼 */
+.slide-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide-btn:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.slide-btn.prev {
+  left: 15px;
+}
+
+.slide-btn.next {
+  right: 15px;
+}
+
+/* 슬라이더 */
+.slider-indicators {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.indicator.active {
+  background-color: white;
+  transform: scale(1.2);
+}
+
+/* 콘텐츠 감싸는 블럭 */
+.content-wrapper {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+/* 최신 게시글 */
+.main-container {
+  flex: 1;
+  min-width: 300px;
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.section-title {
+  font-size: 1.6em;
+  margin-bottom: 20px;
+  color: var(--primary-color);
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 최신 게시글 레이아웃 */
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 25px;
+}
+
+.post-card {
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  height: 340px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #eaeaea;
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: #d0d0d0;
+}
+
+.post-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+  background: url('/static/images/noimage.jpg') center center / cover no-repeat;
+}
+
+.post-info {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  background: linear-gradient(to bottom, #f9f9f9, #ffffff);
+}
+
+.post-info h3 {
+  margin: 0 0 10px;
+  font-size: 1.1em;
+  color: var(--text-primary);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  max-width: 160px;
+}
+
+.post-info p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95em;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; 
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  color: #888;
+  font-size: 0.85em;
+}
+
+.post-meta span:first-child {
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+} /*긴 닉네임 자르기*/
+
+/* 추천 영화 */
+.recommend-container {
+  width: 320px;
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.movie-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.movie-card {
+  background-color: var(--bg-white);
+  border-radius: var(--border-radius);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-speed) ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 4px solid transparent;
+}
+
+.movie-card:hover {
+  background-color: #f0f8ff;
+  border-left: 4px solid var(--primary-color);
+  transform: translateX(5px);
+}
+
+.movie-info {
+  flex: 1;
+}
+
+.movie-info strong {
+  font-size: 1.05em;
+  color: var(--text-primary);
+  margin-bottom: 5px;
+  display: block;
+}
+
+.movie-info span {
+  color: var(--text-secondary);
+  font-size: 0.9em;
+}
+
+.movie-rating {
+  background-color: #ffecb3;
+  color: #e65100;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+/* 확대해도 슬라이더 안 깨지게 */
+@media (max-width: 900px) {
+  .content-wrapper {
+    flex-direction: column;
+  }
+  
+  .recommend-container {
+    width: 100%;
+    margin-top: 30px;
+  }
+  
+  .slider img {
+    height: 250px;
+  }
+}
+
+@media (max-width: 600px) {
+  .post-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .slider img {
+    height: 200px;
+  }
+  
+  .main-page {
+    padding: 15px;
+  }
+  
+  .slide-btn {
+    width: 36px;
+    height: 36px;
+  }
+}
+  

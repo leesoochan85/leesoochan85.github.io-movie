@@ -1,0 +1,152 @@
+.movie-board-wrapper {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .board-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffa000;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+  
+  .movie-layout {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+  }
+  
+  .movie-list-area {
+    flex: 1;
+  }
+  
+  /* 게시글은 메인 페이지와 비슷하게 카드 형식으로 출력 */
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  
+  .post-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .post-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    background-color: #e0e0e0;
+  }
+  
+  .post-info {
+    padding: 16px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .post-info h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .post-info p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.4;
+    height: 3.8em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+  
+  .post-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    font-size: 0.85rem;
+    color: #999;
+  }
+  
+  .movie-genres {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 10px;
+  }
+  
+  /* 장르 필터 */
+  .genre-filter {
+    width: 180px;
+    background: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    font-size: 0.9rem;
+  }
+  
+  .genre-filter h4 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+    color: #ffa000;
+  }
+  
+  .genre-filter label {
+    display: block;
+    margin-bottom: 6px;
+    cursor: pointer;
+    color: #444;
+  }
+  
+  .genre-filter input[type="checkbox"] {
+    margin-right: 6px;
+  }
+  
+  /* 페이지 처리 */
+  .pagination {
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  .pagination button {
+    padding: 8px 12px;
+    margin: 0 4px;
+    border: 1px solid #ddd;
+    background: white;
+    color: #444;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .pagination .current {
+    background-color: #ffa000;
+    color: white;
+    font-weight: bold;
+    pointer-events: none;
+  }
+  
+  
+  

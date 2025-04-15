@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}영화 목록{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/MovieList.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="movie-board-wrapper">
+  <h2 class="board-title"> 추천 영화 목록</h2>
+
+  <div class="movie-layout">
+    <!-- 게시글[영화 표시] + 게시글 더미데이터는 view에서 받아옵니다. -->
+    <section class="movie-list-area">
+      <div class="post-grid" id="movieGrid"></div>
+      <div class="pagination" id="pagination"></div>
+    </section>
+
+    <!-- 페이지 오른쪽에 필터 -->
+    <aside class="genre-filter">
+      <h4>장르 선택</h4>
+      <form id="genreForm">
+        <!-- 필터 처리는 JS에서 합니다.-->
+      </form>
+    </aside>
+  </div>
+</div>
+
+<script src="{% static 'js/MovieList.js' %}"></script>
+{% endblock %}
+
+
+
+

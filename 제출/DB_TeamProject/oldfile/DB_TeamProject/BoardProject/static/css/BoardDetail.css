@@ -1,0 +1,56 @@
+.post-detail-wrapper {
+    max-width: 1200px;
+    margin: 0.8rem auto;
+    padding: 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 0px;
+    background-color: #fff;
+  }
+  
+  .detail-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 0.8rem;
+    margin-top: 0.2rem;
+    padding: 0 2rem;
+  }
+  
+  .detail-meta {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1.2rem;
+    display: flex;
+    gap: 1.5rem;
+    padding: 0 2rem;
+  }
+  
+  .detail-content {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    padding: 0 2rem;
+  }
+  
+  .detail-actions {
+    text-align: right;
+    padding: 0 2rem;
+  }
+  
+  .back-button {
+    text-decoration: none;
+    padding: 0.6rem 1rem;
+    background-color: #eee;
+    border-radius: 8px;
+    font-size: 0.95rem;
+  }
+  .back-button:hover {
+    background-color: #ddd;
+  }
+  
+  .divider {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 0 auto;
+    width: 95%;
+  }
+  

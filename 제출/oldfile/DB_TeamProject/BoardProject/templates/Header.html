@@ -1,0 +1,43 @@
+<header class="header">
+  <div class="logo">
+    <i class="fas fa-film"></i>
+    <a href="/">　영화 정보 공유 게시판</a>
+  </div>
+  
+  <div class="menu-toggle" id="menuToggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  
+  <nav class="nav-links" id="navLinks">
+    <a href="{% url 'post_list' %}" class="{% if request.resolver_match.url_name == 'post_list' %}active{% endif %}">
+      <i class="fas fa-list"></i> 게시글 목록
+    </a>
+    
+    <a href="{% url 'post_write' %}" class="{% if request.resolver_match.url_name == 'post_write' %}active{% endif %}">
+      <i class="fas fa-edit"></i> 글 작성
+    </a>
+    
+    <a href="/mypage" class="{% if request.path == '/mypage' %}active{% endif %}">
+      <i class="fas fa-user"></i> 회원 정보
+    </a>
+
+    {% if user.is_authenticated %}
+      <form action="{% url 'logout' %}" method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" style="background: none; border: none; color: inherit; font: inherit; cursor: pointer;">
+          <i class="fas fa-sign-out-alt"></i> 로그아웃
+        </button>
+      </form>
+    {% else %}
+      <a href="/login">
+        <i class="fas fa-sign-in-alt"></i> 로그인
+      </a>
+    {% endif %}
+
+    <a href="/register">
+      <i class="fas fa-user-plus"></i> 회원가입
+    </a>
+  </nav>
+</header>

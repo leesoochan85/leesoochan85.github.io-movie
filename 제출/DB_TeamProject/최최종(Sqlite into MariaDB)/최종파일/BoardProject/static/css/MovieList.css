@@ -1,0 +1,228 @@
+.movie-board-wrapper {
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.board-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffa000;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.recommendation-title {
+  font-size: 1.5rem;
+  color: #ffa000;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.recommendation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.recommendation-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+.recommendation-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.recommendation-card p {
+  font-size: 0.95rem;
+  color: #777;
+}
+
+.movie-search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto 30px auto;
+  max-width: 600px;
+  padding: 0 10px;
+}
+
+.movie-search-form input[type="text"] {
+  padding: 10px 14px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  max-width: 280px;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.movie-search-form button {
+  padding: 10px 20px;
+  background-color: #ffa000;
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.movie-search-form button:hover {
+  background-color: #e18c00;
+}
+
+.movie-layout {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.movie-list-area {
+  flex: 1;
+}
+
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.post-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.post-info {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.post-info h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.post-info p {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.4;
+  height: 3.8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.post-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.movie-genres {
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 10px;
+}
+
+.genre-filter {
+  width: 180px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  font-size: 0.9rem;
+}
+
+.genre-filter h4 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #ffa000;
+}
+
+.genre-filter label {
+  display: block;
+  margin-bottom: 6px;
+  cursor: pointer;
+  color: #444;
+}
+
+.genre-filter input[type="checkbox"] {
+  margin-right: 6px;
+}
+
+.pagination {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  margin: 0 4px;
+  border: 1px solid #ddd;
+  background: white;
+  color: #444;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.pagination .current {
+  background-color: #ffa000;
+  color: white;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 1rem;
+  color: #999;
+  padding: 40px 0;
+}
+
+.total-count {
+  font-size: 0.85rem;
+  color: #666;
+  text-align: right;
+  margin-bottom: 10px;
+}

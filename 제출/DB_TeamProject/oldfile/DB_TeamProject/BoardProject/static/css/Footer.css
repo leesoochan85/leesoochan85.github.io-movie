@@ -1,0 +1,24 @@
+.sfooter {
+  background-color: #1a2238;
+  color: #e6e6e6;
+  padding: 30px 20px;
+  text-align: left;
+  font-size: 14px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 80px;
+}
+
+.sfooter .footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.sfooter .footer-container p {
+  margin: 8px 0;
+  color: #ccc;
+}
+
+.sfooter .footer-container strong {
+  color: #ffe66d;
+}
