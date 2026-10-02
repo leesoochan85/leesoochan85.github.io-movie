@@ -1,5 +1,5 @@
-// pip install requests pymysql Faker(파이썬에서 코드 실행전 설치해야 하는 패키지)
-// api키로 영화 정보를 받고 랜덤으로 데이터 생성 및 sql에 연동하는 코드입니다.
+# pip install requests pymysql Faker(파이썬에서 코드 실행전 설치해야 하는 패키지)
+# api키로 영화 정보를 받고 랜덤으로 데이터 생성 및 sql에 연동하는 코드입니다.
 
 
 import requests
