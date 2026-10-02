@@ -1,8 +1,0 @@
-{% extends "base.html" %}  {# 레이아웃이 있으면 extends, 없으면 빼도 됨 #}
-
-{% block content %}
-<h1>회원 정보</h1>
-<p><strong>아이디:</strong> {{ user.username }}</p>
-<p><strong>이메일:</strong> {{ user.email }}</p>
-<p><strong>가입일:</strong> {{ user.date_joined }}</p>
-{% endblock %}
